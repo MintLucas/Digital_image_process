@@ -5,12 +5,12 @@
 #include <opencv2/imgcodecs/imgcodecs.hpp>
 #include "Lab01_grayConversion.hpp"
 #include "Lab02_hisBalance.hpp"
-
+#include "Lab03_spacialFilter.hpp"
 
 using namespace std;
 using namespace cv;
 
-int main(int argc, const char * argv[]) {
-    Lab01();
-    return 0;
-}
+//int main(int argc, const char * argv[]) {
+//    Lab03();
+//    return 0;
+//}
