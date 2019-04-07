@@ -72,19 +72,6 @@ Mat DFT( Mat I)
     return magI;
 }
 
-void test7()
-{
-    Mat image, res;
-    image = imread("/Users/zhipeng/ustc_term2/Opencv/Opencv/Opencv/Digital_imgae_process/CSet12/lena.png", 0); // Read the file
-    imshow("原始图像", image);
-    
-    res = DFT(image);
-    imshow("频谱图", res);
-    waitKey(0);
-    destroyAllWindows();
-    return;
-}
-
 int DFTAndIDFT()
 {
     Mat input = imread("/Users/zhipeng/ustc_term2/Opencv/Opencv/Opencv/Digital_imgae_process/CSet12/lena.png", 0);
@@ -135,7 +122,6 @@ void ideal_Low_Pass_Filter(double D0 = 60)
 {
     Mat src, fourier, res;
     src = imread("/Users/zhipeng/ustc_term2/Opencv/Opencv/Opencv/Digital_imgae_process/CSet12/lena.png", 0); // Read the file
-    imshow("原始图像", src);
     Mat img = src.clone();
     //cvtColor(src, img, CV_BGR2GRAY);
     //调整图像加速傅里叶变换
@@ -172,7 +158,7 @@ void ideal_Low_Pass_Filter(double D0 = 60)
     tmp.copyTo(q2);
     //Do为自己设定的阀值具体看公式
     
-    //处理按公式保留中心部分
+    //处理按公式保留中心部分,在二维频谱上画个圆,高频对应灰度变化剧烈的点,让低频通过
     for (int y = 0; y < mag.rows; y++) {
         double* data = mag.ptr<double>(y);
         for (int x = 0; x < mag.cols; x++) {
@@ -197,9 +183,10 @@ void ideal_Low_Pass_Filter(double D0 = 60)
     Mat invDFT, invDFTcvt;
     idft(mag, invDFT, DFT_SCALE | DFT_REAL_OUTPUT); // Applying IDFT
     invDFT.convertTo(invDFTcvt, CV_8U);
-    imshow("理想低通滤波器", invDFTcvt);
-    waitKey(0);
-    destroyAllWindows();
+    imgShow(invDFTcvt, "Butterworth_Low_Paass_Filter");
+    Mat freImg;
+    freImg = DFT(invDFTcvt);
+    imgShow(freImg, "freImg_Butterworth_Low_Paass_Filter");
     return;
 }
 
@@ -207,7 +194,6 @@ void ideal_High_Pass_Filter(double D0 = 60)
 {
     Mat src, fourier, res;
     src = imread("/Users/zhipeng/ustc_term2/Opencv/Opencv/Opencv/Digital_imgae_process/CSet12/lena.png", 0); // Read the file
-    imshow("原始图像", src);
     Mat img = src.clone();
     //cvtColor(src, img, CV_BGR2GRAY);
     //调整图像加速傅里叶变换
@@ -269,9 +255,11 @@ void ideal_High_Pass_Filter(double D0 = 60)
     Mat invDFT, invDFTcvt;
     idft(mag, invDFT, DFT_SCALE | DFT_REAL_OUTPUT); // Applying IDFT
     invDFT.convertTo(invDFTcvt, CV_8U);
-    imshow("理想高通滤波器", invDFTcvt);
-    waitKey(0);
-    destroyAllWindows();
+    
+    imgShow(invDFTcvt, "ideal_High_Pass_Filter");
+    Mat freImg;
+    freImg = DFT(invDFTcvt);
+    imgShow(freImg, "freImg_ideal_High_Pass_Filter");
     return;
 }
 
@@ -323,10 +311,11 @@ void Butterworth_Low_Paass_Filter(double D0=60, int n=2)
         double* data = mag.ptr<double>(y);
         for (int x = 0; x < mag.cols; x++)
         {
-            //cout << data[x] << endl;
+            cout << data[x] << endl;
             double d = sqrt(pow((y - cy), 2) + pow((x - cx), 2));
-            //cout << d << endl;
+            cout << d << endl;
             double h = 1.0 / (1 + pow(d / D0, 2 * n));
+            cout << h << endl;
             if (h <= 0.5)
             {
                 data[x] = 0;
@@ -349,10 +338,11 @@ void Butterworth_Low_Paass_Filter(double D0=60, int n=2)
     Mat invDFT, invDFTcvt;
     idft(complexImg, invDFT, DFT_SCALE | DFT_REAL_OUTPUT); // Applying IDFT
     invDFT.convertTo(invDFTcvt, CV_8U);
-    imshow("巴特沃斯低通滤波器", invDFTcvt);
     
-    waitKey(0);
-    destroyAllWindows();
+    imgShow(invDFTcvt, "Butterworth_Low_Paass_Filter");
+    Mat freImg;
+    freImg = DFT(invDFTcvt);
+    imgShow(freImg, "freImg_Butterworth_Low_Paass_Filter");
     return;
 }
 
@@ -360,7 +350,7 @@ void Butterworth_High_Paass_Filter(double D0 = 60, int n =2)
 {
     Mat src, fourier, res;
     src = imread("/Users/zhipeng/ustc_term2/Opencv/Opencv/Opencv/Digital_imgae_process/CSet12/lena.png", 0); // Read the file
-    imshow("原始图像", src);
+    
     
     //H = 1 / (1+(D/D0)^2n)
     Mat img = src.clone();
@@ -428,8 +418,23 @@ void Butterworth_High_Paass_Filter(double D0 = 60, int n =2)
     Mat invDFT, invDFTcvt;
     idft(complexImg, invDFT, DFT_SCALE | DFT_REAL_OUTPUT); // Applying IDFT
     invDFT.convertTo(invDFTcvt, CV_8U);
-    imshow("巴特沃斯高通滤波器", invDFTcvt);
     
+    imgShow(invDFTcvt, "Butterworth_High_Paass_Filter");
+    Mat freImg;
+    freImg = DFT(invDFTcvt);
+    imgShow(freImg, "freImg_Butterworth_High_Paass_Filter");
+    
+    return;
+}
+
+void showdft()
+{
+    Mat image, res;
+    image = imread("/Users/zhipeng/ustc_term2/Opencv/Opencv/Opencv/Digital_imgae_process/CSet12/lena.png", 0); // Read the file
+    imshow("原始图像", image);
+    
+    res = DFT(image);
+    imshow("频谱图", res);
     waitKey(0);
     destroyAllWindows();
     return;
@@ -438,7 +443,9 @@ void Butterworth_High_Paass_Filter(double D0 = 60, int n =2)
 
 int main()
 {
-    DFTAndIDFT();
+//    DFTAndIDFT();
+
+    showdft();
     ideal_Low_Pass_Filter(40.0);
     ideal_High_Pass_Filter(40.0);
     Butterworth_Low_Paass_Filter(40,2);
