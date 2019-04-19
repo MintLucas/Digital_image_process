@@ -441,7 +441,7 @@ void showdft()
 }
 
 
-int main()
+int Lab05()
 {
 //    DFTAndIDFT();
 
@@ -450,7 +450,6 @@ int main()
     ideal_High_Pass_Filter(40.0);
     Butterworth_Low_Paass_Filter(40,2);
     Butterworth_High_Paass_Filter(40,2);
-    
     return 0;
 }
 

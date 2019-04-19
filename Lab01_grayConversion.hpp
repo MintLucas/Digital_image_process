@@ -13,9 +13,11 @@ using namespace std;
 using namespace cv;
 
 void imgShow(Mat&, string);
+void imShow(string title, Mat &srcImg);
 void Threshold(Mat&, double);
 void logTransform(Mat&, int);
 void gammaTransform(Mat&, int, double);
 void complementaryTransform(Mat&);
+void complementaryTransforminHSV(Mat &srcImg);
 int Lab01();
 #endif /* Lab01_grayConversion_hpp */

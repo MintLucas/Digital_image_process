@@ -15,6 +15,6 @@
 void meanFilterShow(Mat srcImg, Mat colImg);
 void medeanFilterShow(Mat srcImg);
 void harmonicFilterShow(Mat srcImg);
-
+int Lab04();
 
 #endif /* Lab04_noiseEliminate_hpp */

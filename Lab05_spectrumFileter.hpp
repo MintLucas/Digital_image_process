@@ -12,4 +12,6 @@
 #include <stdio.h>
 #include "Lab01_grayConversion.hpp"
 
+int Lab05();
+
 #endif /* Lab05_spectrumFileter_hpp */

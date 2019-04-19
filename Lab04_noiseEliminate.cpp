@@ -1,4 +1,3 @@
-
 #include "Lab04_noiseEliminate.hpp"
 #include<iostream>
 #include<string>

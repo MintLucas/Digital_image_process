@@ -24,14 +24,26 @@ int Lab01() {
 
     // 返回一个3通道的彩色图像
     img = imread("/Users/zhipeng/ustc_term2/Opencv/Opencv/Opencv/Digital_imgae_process/CSet12/lena.png", 1);
-    complementaryTransform(img);
-    complementaryTransform(img);
+    //complementaryTransform(img);
+    complementaryTransforminHSV(img);
 
     return 0;
 }
 
 // 显示一张图片
 void imgShow(Mat &srcImg, string title) {
+    
+    // 新建一个标题为"Example1"的窗口，WINDOW_AUTOSIZE表示窗口的大小会根据载入图像的大小进行调整
+    namedWindow(title, WINDOW_AUTOSIZE);
+    // 将所选图片绘制到窗口上，且显示
+    imshow(title, srcImg);
+    // 无限等待直到用户按下某个键
+    waitKey(0);
+    // 销毁窗口
+    destroyWindow(title);
+}
+
+void imShow(string title, Mat &srcImg) {
     
     // 新建一个标题为"Example1"的窗口，WINDOW_AUTOSIZE表示窗口的大小会根据载入图像的大小进行调整
     namedWindow(title, WINDOW_AUTOSIZE);
